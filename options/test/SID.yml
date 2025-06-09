@@ -1,0 +1,37 @@
+### must be same as 
+
+name: SID_model
+suffix: ~  # add suffix to saved images
+model: video_base8_cos11_final
+distortion: sr
+scale: 1
+crop_border: ~  # crop border when evaluation. If None(~), crop the scale pixels
+gpu_ids: [0]
+
+datasets:
+  test:  # the 1st test dataset
+    name: test
+    mode: video_samesize_sid
+    dataroot_GT: /home/dataset/long_sid2
+    dataroot_LQ: /home/dataset/short_sid2
+    train_size: [960, 512]
+    cache_data: true
+    N_frames: 5
+    padding: new_info
+
+#### network structures
+network_G:
+  which_model_G: low_light_transformer2648_final
+  nf: 64
+  nframes: 5      # must be same as N_frames in dataset.
+  groups: 8
+  front_RBs: 1
+  back_RBs: 1
+  predeblur: true     # default false
+  HR_in: true
+  w_TSA: true
+
+#### path
+path:
+  root: /home/snr-enhancement
+  pretrain_model_G: ./pretrained_model/SID.pth
